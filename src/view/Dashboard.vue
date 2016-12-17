@@ -1,10 +1,12 @@
 <template>
   <div class="wraper">
-    start
+    <p>功能最全的配置</p>
+    <Vmusic></Vmusic>
   </div>
 </template>
 
 <script>
+import Vmusic from '../components/Vmusic'
 export default {
   data () {
     return {
@@ -13,6 +15,7 @@ export default {
   computed: {
   },
   components: {
+    Vmusic
   },
   methods: {
   },
@@ -40,6 +43,11 @@ export default {
     font-size: 100%;
     -webkit-tap-highlight-color:rgba(255,255,255,0);
     vertical-align: baseline;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: Arial,Helvetica,sans-serif;
+  }
+
+  .wraper {
+    width: 600px;
+    margin: auto;
   }
 </style>
