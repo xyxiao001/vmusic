@@ -1,6 +1,6 @@
 <template>
   <div class="wraper">
-    <p>功能最全的配置</p>
+    <h1 class="title">一个简约， 不简单的播放器！</h1>
     <Vmusic></Vmusic>
   </div>
 </template>
@@ -47,7 +47,13 @@ export default {
   }
 
   .wraper {
-    width: 600px;
+    max-width: 600px;
     margin: auto;
+
+    .title {
+      line-height: 40px;
+      font-weight: bold;
+      color: #666;
+    }
   }
 </style>
