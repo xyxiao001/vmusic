@@ -500,4 +500,29 @@ export default {
       }
     }
   }
+
+  @media screen and (max-width: 375px) {
+    .v-music {
+      .v-content {
+        .v-progress {
+          .v-bar {
+            width: 45%;
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 320px) {
+    .v-music {
+      .v-content {
+        .v-progress {
+          .v-bar {
+            width: 40%;
+          }
+        }
+      }
+    }
+  }
+
 </style>
