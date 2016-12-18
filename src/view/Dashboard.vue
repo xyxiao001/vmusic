@@ -1,6 +1,6 @@
 <template>
   <div class="wraper">
-    <h1 class="title">一个简约， 不简单的播放器！</h1>
+    <h1 class="title">一个简约， 不简单的播放器！ <a class="url" href="https://github.com/xyxiao001/vmusic" target="_blank">goodboy</a></h1>
     <Vmusic></Vmusic>
   </div>
 </template>
@@ -44,6 +44,8 @@ export default {
     -webkit-tap-highlight-color:rgba(255,255,255,0);
     vertical-align: baseline;
     font-family: Arial,Helvetica,sans-serif;
+    text-decoration: none;
+    color: #666;
   }
 
   .wraper {
@@ -54,6 +56,10 @@ export default {
       line-height: 40px;
       font-weight: bold;
       color: #666;
+    }
+
+    a.url {
+      text-shadow: 1px 2px 3px red;
     }
   }
 </style>

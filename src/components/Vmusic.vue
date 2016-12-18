@@ -70,7 +70,7 @@ export default {
       singer: '回音哥',
       song: 'AI',
       nowTime: 0,
-      allTime: 0,
+      allTime: 999,
       msg: '播放',
       set: 0,
       type: 'order',
@@ -456,6 +456,45 @@ export default {
             font-size: 18px;
             padding-left: 2px;
             font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 520px) {
+    .v-music {
+      margin-left: 1%;
+      width: 98%;
+
+      .v-content {
+        .v-pic {
+          width: 20%;
+        }
+
+        .v-info {
+          width: 80%;
+        }
+
+        .v-progress {
+          .v-bar {
+            width: 50%;
+
+            .v-line-to {
+              .v-point {
+                width: 10px;
+                height: 10px;
+                margin-top: -5px;
+              }
+            }
+          }
+
+          .v-des {
+            position: absolute;
+            margin-left: 0;
+            right: 5px;
+            bottom: 5px;
+            width: auto;
           }
         }
       }
