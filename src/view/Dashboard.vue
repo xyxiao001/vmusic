@@ -1,6 +1,9 @@
 <template>
   <div class="wraper">
     <h1 class="title">一个简约， 不简单的播放器！ <a class="url" href="https://github.com/xyxiao001/vmusic" target="_blank">goodboy</a></h1>
+    <h3>类型1</h3>
+    <Vmusic></Vmusic>
+    <h3>类型2</h3>
     <Vmusic></Vmusic>
   </div>
 </template>
@@ -56,6 +59,10 @@ export default {
       line-height: 40px;
       font-weight: bold;
       color: #666;
+    }
+
+    h3 {
+      line-height: 35px;
     }
 
     a.url {
