@@ -426,7 +426,7 @@ export default {
 
       i {
         position: absolute;
-        top: 3px;
+        bottom: 3px;
         left: 5px;
         font-size: 12px;
         color: #666;
