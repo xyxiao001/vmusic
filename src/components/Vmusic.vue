@@ -43,8 +43,13 @@
             </div>
             <div class="v-des">
               <span>- {{ reslutTime }}</span>
-              <span><i class="iconfont icon-volume-max" title="音量"></i></span>
-              <span>
+              <div class="i-control volume">
+                <div class="volume-progress" @click="changeVolume($event)" ref="volume">
+                  <div class="volume-to" :style="{'height': this.volume * 100 + '%'}"></div>
+                </div>
+                <i class="iconfont icon-volume-max" title="音量"></i>
+              </div>
+              <div class="i-control">
                 <i class="iconfont"
                   @click="changeType"
                   :title="this.type === 'loop' ? '单曲循环' : this.type === 'random' ? '随机播放' : '顺序播放'"
@@ -52,8 +57,8 @@
                   'icon-loop': type === 'loop', 'icon-random': type === 'random'
                 }">
                 </i>
-              </span>
-              <span><i class="iconfont icon-menu" title="播放列表"></i></span>
+              </div>
+              <div class="i-control"><i class="iconfont icon-menu" title="播放列表"></i></div>
             </div>
           </div>
         </div>
@@ -117,12 +122,13 @@ export default {
       songname: '',
       nowTime: 0,
       now: -1,
-      allTime: 9999,
+      allTime: 999,
       msg: '播放',
       set: 0,
       type: 'order',
       lyr: '',
       lyrList: [],
+      volume: 1,
       url: ''
     }
   },
@@ -154,6 +160,9 @@ export default {
           this.start()
         })
       }
+    },
+    volume () {
+      this.$refs.music.volume = this.volume
     }
   },
   components: {
@@ -225,6 +234,16 @@ export default {
     changeType () {
       this.type === 'order' ? this.type = 'random' : this.type === 'random' ? this.type = 'loop' : this.type = 'order'
     },
+    // 改变音量
+    changeVolume (e) {
+      var all = window.getComputedStyle(this.$refs.volume).height
+      all = all.replace('px', '')
+      if (e.target.className === 'volume-progress') {
+        this.volume = ((all - e.offsetY) / all).toFixed(2)
+      } else {
+        this.volume = ((all - e.offsetY) / all * this.volume).toFixed(2)
+      }
+    },
     // 获取当前播放时间和总时间
     updateTime () {
       this.nowTime = this.$refs.music.currentTime
@@ -294,7 +313,7 @@ export default {
           // var time = /[[\d:\d((.|)\d\])]/g.exec(val)
         })
         // 添加一个空的p
-        lyrObj.push({min: 999, sec: 999, ms: 999, total: 9999, txt: ''})
+        lyrObj.push({min: 999, sec: 999, ms: 999, total: 999, txt: ''})
         this.lyrList = lyrObj
         // 第一个选中
         this.updateLyr()
@@ -307,7 +326,6 @@ export default {
     // 单纯的点击跳转
     jump (e) {
       if (e.target.nodeName !== 'SPAN') {
-        // 当开始点击时 停止播放
         var go = e.offsetX
         // 得到要去的时间
         var all = window.getComputedStyle(this.$refs.bar).width
@@ -367,7 +385,7 @@ export default {
       this.pic = this.lists[0].img
       this.showLyr()
     }
-    this.$refs.music.volume = 0.3
+    this.volume = 0.3
     this.now = 0
   }
 }
@@ -561,10 +579,10 @@ export default {
             position: absolute;
             top: 0;
             right: 5px;
-            margin-top: -4px;
+            margin-top: -5px;
             margin-right: -10px;
-            height: 8px;
-            width: 8px;
+            height: 10px;
+            width: 10px;
             border-radius: 50%;
             background: #fff;
             cursor: pointer;
@@ -588,7 +606,9 @@ export default {
           padding-left: 7px;
           user-select: none;
 
-          span {
+          .i-control {
+            position: relative;
+            display: inline-block;
             line-height: 17px;
             vertical-align: middle;
           }
@@ -607,6 +627,29 @@ export default {
             padding-left: 2px;
             font-size: 18px;
           }
+        }
+      }
+
+      .volume:hover  .volume-progress {
+        display: block;
+      }
+
+      .volume-progress {
+        display: none;
+        position: absolute;
+        bottom: 18px;
+        right: 9px;
+        width: 7px;
+        height: 35px;
+        background: #aaa;
+        cursor: pointer;
+
+        .volume-to {
+          position: absolute;
+          bottom: 0;
+          background: #ad7a86;
+          width: 7px;
+          transition: all .1s ease;
         }
       }
     }
@@ -671,9 +714,9 @@ export default {
 
             .v-line-to {
               .v-point {
-                width: 10px;
-                height: 10px;
-                margin-top: -5px;
+                width: 12px;
+                height: 12px;
+                margin-top: -6px;
               }
             }
           }

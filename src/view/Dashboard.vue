@@ -1,6 +1,6 @@
 <template>
   <div class="wraper">
-    <h1 class="title">一个简约， 不简单的播放器！ <a class="url" href="https://github.com/xyxiao001/vmusic" target="_blank">goodboy</a></h1>
+    <h1 class="title"><a class="url" href="https://github.com/xyxiao001/vmusic" target="_blank">goodboy</a></h1>
     <h3>类型1</h3>
     <Vmusic></Vmusic>
     <h3>类型2</h3>
