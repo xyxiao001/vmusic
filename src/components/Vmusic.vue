@@ -185,6 +185,7 @@ export default {
           this.play()
         })
       } else {
+        this.$refs.music.pause()
         this.now = index
         this.nowTime = 0
         this.songname = this.lists[index].songname
@@ -194,11 +195,11 @@ export default {
         this.pic = this.lists[index].img
         this.showLyr()
         this.$nextTick(() => {
-          document.querySelectorAll('.v-audio').forEach((val) => {
-            val.pause()
-          })
-          this.$refs.music.play()
-          this.start()
+          if (this.playing === false) {
+            this.playing = true
+          } else {
+            this.$refs.music.play()
+          }
         })
       }
     },
