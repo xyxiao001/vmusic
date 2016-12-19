@@ -153,9 +153,9 @@ export default {
       } else {
         this.$nextTick(() => {
           // 暂停其他所有自己的播放器
-          document.querySelectorAll('.v-audio').forEach((val) => {
-            val.pause()
-          })
+          // document.querySelectorAll('.v-audio').forEach((val) => {
+          //   val.pause()
+          // })
           this.$refs.music.play()
           this.start()
         })
@@ -194,6 +194,7 @@ export default {
         this.url = this.lists[index].url
         this.pic = this.lists[index].img
         this.showLyr()
+        this.$refs.music.load()
         this.$nextTick(() => {
           if (this.playing === false) {
             this.playing = true
@@ -281,7 +282,7 @@ export default {
         this.updateTime()
         // 更新展示歌词
         this.updateLyr()
-      }, 60)
+      }, 100)
     },
     // 暂停计时
     stop () {
@@ -388,6 +389,8 @@ export default {
       this.url = this.lists[0].url
       this.pic = this.lists[0].img
       this.showLyr()
+      this.$refs.music.load()
+      this.updateTime()
     }
     this.volume = 0.3
     this.now = 0
