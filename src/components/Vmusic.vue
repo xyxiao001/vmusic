@@ -53,7 +53,7 @@
                 }">
                 </i>
               </span>
-              <span><i class="iconfont icon-menu" title="展开列表"></i></span>
+              <span><i class="iconfont icon-menu" title="播放列表"></i></span>
             </div>
           </div>
         </div>
@@ -178,7 +178,6 @@ export default {
       } else {
         this.playing = false
         this.now = index
-        this.$refs.music.currentTime = 0
         this.nowTime = 0
         this.songname = this.lists[index].songname
         this.singer = this.lists[index].singer
@@ -360,7 +359,6 @@ export default {
   },
   mounted () {
     if (this.lists.length > 0) {
-      this.$refs.music.currentTime = 0
       this.nowTime = 0
       this.songname = this.lists[0].songname
       this.singer = this.lists[0].singer
