@@ -185,7 +185,6 @@ export default {
           this.play()
         })
       } else {
-        this.playing = false
         this.now = index
         this.nowTime = 0
         this.songname = this.lists[index].songname
@@ -195,7 +194,11 @@ export default {
         this.pic = this.lists[index].img
         this.showLyr()
         this.$nextTick(() => {
-          this.playing = true
+          document.querySelectorAll('.v-audio').forEach((val) => {
+            val.pause()
+          })
+          this.$refs.music.play()
+          this.start()
         })
       }
     },
@@ -451,31 +454,31 @@ export default {
 
       i.icon-play {
         position: absolute;
-        top: 30px;
-        left: 30%;
+        right: 35%;
+        bottom: 30%;
         font-size: 35px;
         animation: showPlay 0.2s ease-out;
       }
 
       i.icon-pause {
         position: absolute;
-        top: 5px;
-        left: 5px;
+        right: 5%;
+        bottom: 5%;
         animation: showPause 0.2s ease-out;
       }
 
       @keyframes showPlay {
         from {
           position: absolute;
-          top: 5px;
-          left: 5px;
+          right: 5%;
+          bottom: 5%;
           font-size: 23px;
         }
 
         to {
           position: absolute;
-          top: 30px;
-          left: 30%;
+          right: 35%;
+          bottom: 30%;
           font-size: 35px;
         }
       }
@@ -483,15 +486,15 @@ export default {
       @keyframes showPause {
         from {
           position: absolute;
-          top: 30px;
-          left: 30%;
+          right: 35%;
+          bottom: 30%;
           font-size: 35px;
         }
 
         to {
           position: absolute;
-          top: 5px;
-          left: 5px;
+          right: 5%;
+          bottom: 5%;
           font-size: 23px;
         }
       }
