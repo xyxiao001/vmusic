@@ -698,6 +698,11 @@ export default {
 
     .show-list {
       overflow: hidden;
+      ol {
+        max-height: 140px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
       ol li {
         position: relative;
         height: 32px;
