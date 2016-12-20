@@ -3,10 +3,10 @@
     <div class="v-content">
       <div
         class="v-pic"
+        @click="play()"
         :style="{'background-image': 'url(' + pic + ')'}">
         <i class="iconfont"
           :title="msg"
-          @click="play()"
           :class="{'icon-play': playing === false, 'icon-pause': playing === true}">
         </i>
       </div>
@@ -153,9 +153,11 @@ export default {
       } else {
         this.$nextTick(() => {
           // 暂停其他所有自己的播放器
-          // document.querySelectorAll('.v-audio').forEach((val) => {
-          //   val.pause()
-          // })
+          var list = document.querySelectorAll('.v-audio')
+          list = [].slice.call(list)
+          list.forEach((val) => {
+            val.pause()
+          })
           this.$refs.music.play()
           this.start()
         })
@@ -194,7 +196,7 @@ export default {
         this.url = this.lists[index].url
         this.pic = this.lists[index].img
         this.showLyr()
-        this.$refs.music.load()
+        // this.$refs.music.load()
         this.$nextTick(() => {
           if (this.playing === false) {
             this.playing = true
@@ -389,10 +391,10 @@ export default {
       this.url = this.lists[0].url
       this.pic = this.lists[0].img
       this.showLyr()
-      this.$refs.music.load()
+      // this.$refs.music.load()
       this.updateTime()
     }
-    this.volume = 0.3
+    this.volume = 0.5
     this.now = 0
   }
 }
