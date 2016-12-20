@@ -700,7 +700,7 @@ export default {
       overflow: hidden;
       ol {
         max-height: 140px;
-        overflow-y: scroll;
+        overflow-y: auto;
         overflow-x: hidden;
       }
       ol li {
