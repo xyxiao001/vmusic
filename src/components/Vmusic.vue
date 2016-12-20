@@ -13,14 +13,14 @@
       <div class="v-info">
         <div class="v-search">
           <i class="iconfont icon-search"></i>
-          <input type="text" placeholder="搜一搜">
+          <input type="text" placeholder="搜一搜" v-model="searchInput">
         </div>
         <div class="v-theme">
           <i class="iconfont icon-theme"></i>
         </div>
         <div class="v-title">
           <span class="song">{{ songname }}</span>
-          <span class="singer">- {{ singer }}</span>
+          <span class="singer">- {{ singername }}</span>
         </div>
         <div class="v-lyr">
           <div class="lyr-text" ref="lyrText" v-show="false" v-html="lyr"></div>
@@ -64,7 +64,7 @@
         </div>
       </div>
       <div class="show-list">
-        <ol>
+        <ol v-show="lists.length >= 1">
           <li>本地歌曲</li>
           <li
             v-for="(item, $index) in lists"
@@ -73,12 +73,20 @@
             <span class="v-cur" v-show="now === $index"></span>
             <span>{{ $index + 1 }}</span>
             <span class="song">{{ item.songname }}</span>
-            <span class="singer">{{ item.singer }}</span>
+            <span class="singer">{{ item.singername }}</span>
           </li>
         </ol>
-        <ol class="search-list" v-show="searchLists.length > 1">
+        <ol class="search-list" v-show="search && searchInput.length > 0">
           <li>搜索歌曲</li>
-          <li>123</li>
+          <li
+            v-for="(item, $index) in searchLists"
+            :class="{'on': now === $index}"
+            @click="playOnline($index)">
+            <span class="v-cur" v-show="now === $index"></span>
+            <span>{{ $index + 1 }}</span>
+            <span class="song">{{ item.songname }}</span>
+            <span class="singer">{{ item.singername }}</span>
+          </li>
         </ol>
       </div>
     </div>
@@ -99,37 +107,39 @@
 export default {
   data () {
     return {
-      lists: [
-        {
-          songname: 'AI',
-          singer: '回音哥',
-          lyr: '[ti&#58;A&#46;I]&#10;[ar&#58;回音哥]&#10;[al&#58;A&#46;I]&#10;[by&#58;]&#10;[offset&#58;0]&#10;[00&#58;00&#46;48]A&#46;I&#32;&#45;&#32;回音哥&#10;[00&#58;01&#46;11]词：回音哥&#10;[00&#58;01&#46;27]曲：颜小健/回音哥&#10;[00&#58;01&#46;57]编曲：颜小健&#10;[00&#58;01&#46;77]混音：颜小健&#10;[00&#58;01&#46;97]吉他：金天&#10;[00&#58;02&#46;13]录音：苍白&#10;[00&#58;02&#46;30]和声：回音哥&#10;[00&#58;02&#46;49]和声编写：颜小健&#10;[00&#58;02&#46;76]母带：刘三斤&#10;[00&#58;02&#46;96]制作人：颜小健&#10;[00&#58;03&#46;60]&#10;[00&#58;11&#46;91]以假乱真的眼睛&#32;给你透露我的心&#10;[00&#58;15&#46;32]&#10;[00&#58;16&#46;83]组织言语的逻辑&#32;寻找合适的表情&#10;[00&#58;20&#46;50]&#10;[00&#58;21&#46;89]举手投足的轻盈&#32;挥舞沉重的钢筋&#10;[00&#58;25&#46;43]&#10;[00&#58;26&#46;99]可能的万分之一&#32;全都由计算证明&#10;[00&#58;30&#46;98]现在&#32;格式&#32;你的神经&#10;[00&#58;34&#46;14]安装全新的你&#32;oh&#32;baby&#32;baby&#10;[00&#58;36&#46;71]及时&#32;更新整理&#32;修复错误问题&#10;[00&#58;40&#46;58]&#10;[00&#58;41&#46;11]现在&#32;定制&#32;你的权利&#10;[00&#58;44&#46;10]植入你的目的&#32;oh&#32;baby&#32;baby&#10;[00&#58;46&#46;91]测试&#32;我的稳定&#32;完成未来的题&#10;[00&#58;50&#46;75]&#10;[00&#58;53&#46;19]你想还原的日期&#32;早遥遥无期&#10;[00&#58;57&#46;05]&#10;[00&#58;57&#46;91]把自己当个机器&#32;才够人性&#10;[01&#58;02&#46;00]&#10;[01&#58;12&#46;60]演算出爱的程序&#32;删除原始的动机&#10;[01&#58;16&#46;12]&#10;[01&#58;17&#46;46]运用情绪的高低&#32;渲染无聊的场景&#10;[01&#58;21&#46;04]&#10;[01&#58;22&#46;51]城市的电子游戏&#32;是复杂的数字题&#10;[01&#58;26&#46;26]&#10;[01&#58;27&#46;56]排除多余的肯定&#32;找到简单的定义&#10;[01&#58;31&#46;72]现在&#32;格式&#32;你的神经&#10;[01&#58;34&#46;75]安装全新的你&#32;oh&#32;baby&#32;baby&#10;[01&#58;37&#46;29]及时&#32;更新整理&#32;修复错误问题&#10;[01&#58;41&#46;14]&#10;[01&#58;41&#46;77]现在&#32;定制&#32;你的权利&#10;[01&#58;44&#46;82]植入你的目的&#32;oh&#32;baby&#32;baby&#10;[01&#58;47&#46;45]测试&#32;我的稳定&#32;完成未来的题&#10;[01&#58;51&#46;40]&#10;[01&#58;53&#46;50]你想还原的日期&#32;早遥遥无期&#10;[01&#58;57&#46;73]&#10;[01&#58;58&#46;53]把自己当个机器&#32;才够人性&#10;[02&#58;02&#46;56]&#10;[02&#58;44&#46;13]你想还原的日期&#32;早遥遥无期&#10;[02&#58;48&#46;20]&#10;[02&#58;48&#46;92]把自己当作机器&#32;全新的你',
-          img: 'http://i.gtimg.cn/music/photo/mid_album_300/o/C/001BkQ9Y2e1hoC.jpg',
-          url: 'http://ws.stream.qqmusic.qq.com/109828807.m4a?fromtag=46'
-        },
-        {
-          songname: '告白气球',
-          singer: '周杰伦',
-          lyr: '[ti&#58;告白气球]&#10;[ar&#58;周杰伦]&#10;[al&#58;周杰伦的床边故事]&#10;[by&#58;]&#10;[offset&#58;0]&#10;[00&#58;00&#46;98]告白气球&#32;&#45;&#32;周杰伦&#10;[00&#58;04&#46;19]词：方文山&#10;[00&#58;06&#46;29]曲：周杰伦&#10;[00&#58;07&#46;78]&#10;[00&#58;23&#46;65]塞纳河畔&#32;左岸的咖啡&#10;[00&#58;26&#46;45]我手一杯&#32;品尝你的美&#10;[00&#58;28&#46;94]&#10;[00&#58;29&#46;49]留下唇印的嘴&#10;[00&#58;31&#46;89]&#10;[00&#58;34&#46;42]花店玫瑰&#32;名字写错谁&#10;[00&#58;37&#46;18]告白气球&#32;风吹到对街&#10;[00&#58;40&#46;18]微笑在天上飞&#10;[00&#58;42&#46;59]&#10;[00&#58;44&#46;27]你说你有点难追&#32;想让我知难而退&#10;[00&#58;49&#46;40]礼物不需挑最贵&#32;只要香榭的落叶&#10;[00&#58;54&#46;67]喔&#32;营造浪漫的约会&#32;不害怕搞砸一切&#10;[01&#58;00&#46;01]拥有你就拥有&#32;全世界&#10;[01&#58;04&#46;15]&#10;[01&#58;05&#46;13]亲爱的&#32;爱上你&#32;从那天起&#10;[01&#58;11&#46;48]甜蜜的很轻易&#10;[01&#58;14&#46;59]&#10;[01&#58;15&#46;70]亲爱的&#32;别任性&#32;你的眼睛&#10;[01&#58;21&#46;36]&#10;[01&#58;22&#46;08]在说我愿意&#10;[01&#58;25&#46;42]&#10;[01&#58;49&#46;14]塞纳河畔&#32;左岸的咖啡&#10;[01&#58;51&#46;72]我手一杯&#32;品尝你的美&#10;[01&#58;54&#46;20]&#10;[01&#58;54&#46;87]留下唇印的嘴&#10;[01&#58;57&#46;31]&#10;[01&#58;59&#46;81]花店玫瑰&#32;名字写错谁&#10;[02&#58;02&#46;39]告白气球&#32;风吹到对街&#10;[02&#58;04&#46;70]&#10;[02&#58;05&#46;44]微笑在天上飞&#10;[02&#58;07&#46;99]&#10;[02&#58;09&#46;61]你说你有点难追&#32;想让我知难而退&#10;[02&#58;14&#46;78]礼物不需挑最贵&#32;只要香榭的落叶&#10;[02&#58;19&#46;65]&#10;[02&#58;20&#46;18]喔&#32;营造浪漫的约会&#32;不害怕搞砸一切&#10;[02&#58;25&#46;40]拥有你就拥有&#32;全世界&#10;[02&#58;29&#46;42]&#10;[02&#58;30&#46;46]亲爱的&#32;爱上你&#32;从那天起&#10;[02&#58;36&#46;87]甜蜜的很轻易&#10;[02&#58;39&#46;98]&#10;[02&#58;41&#46;01]亲爱的&#32;别任性&#32;你的眼睛&#10;[02&#58;46&#46;74]&#10;[02&#58;47&#46;33]在说我愿意&#10;[02&#58;51&#46;16]&#10;[02&#58;51&#46;85]亲爱的&#32;爱上你&#32;恋爱日记&#10;[02&#58;57&#46;46]&#10;[02&#58;58&#46;06]飘香水的回忆&#10;[03&#58;01&#46;49]&#10;[03&#58;02&#46;42]一整瓶&#32;的梦境&#32;全都有你&#10;[03&#58;08&#46;11]&#10;[03&#58;08&#46;82]搅拌在一起&#10;[03&#58;12&#46;29]&#10;[03&#58;13&#46;16]亲爱的别任性&#32;你的眼睛&#10;[03&#58;20&#46;01]&#10;[03&#58;21&#46;37]在说我愿意',
-          img: 'http://i.gtimg.cn/music/photo/mid_album_300/Y/d/003RMaRI1iFoYd.jpg',
-          url: 'http://ws.stream.qqmusic.qq.com/107192078.m4a?fromtag=46'
-        }
-      ],
+      search: true,
       searchLists: [],
+      searchInput: '',
       playing: false,
       pic: '',
-      singer: '',
+      singername: '',
       songname: '',
       nowTime: 0,
       now: -1,
-      allTime: 999,
+      allTime: 0,
       msg: '播放',
       set: 0,
       type: 'order',
       lyr: '',
       lyrList: [],
       volume: 1,
-      url: ''
+      url: '',
+      urlSearch: 'https://route.showapi.com/213-1?page=1&showapi_appid=26601&showapi_sign=adc05e2062a5402b81c563a3ced09208&keyword=',
+      urlDetail: 'https://route.showapi.com/213-2?showapi_appid=26601&showapi_sign=adc05e2062a5402b81c563a3ced09208&musicid='
+    }
+  },
+  props: {
+    lists: {
+      type: Array,
+      required: false,
+      default: () => {
+        return []
+      }
+    },
+    searchKey: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   computed: {
@@ -172,6 +182,9 @@ export default {
   methods: {
     // 播放
     play () {
+      if (this.songname === '') {
+        return false
+      }
       if (this.playing === true) {
         this.playing = false
         this.msg = '播放'
@@ -191,7 +204,7 @@ export default {
         this.now = index
         this.nowTime = 0
         this.songname = this.lists[index].songname
-        this.singer = this.lists[index].singer
+        this.singername = this.lists[index].singername
         this.lyr = this.lists[index].lyr
         this.url = this.lists[index].url
         this.pic = this.lists[index].img
@@ -205,6 +218,9 @@ export default {
           }
         })
       }
+    },
+    // 播放线上
+    playOnline (index) {
     },
     // 暂停播放
     pause () {
@@ -279,6 +295,9 @@ export default {
     },
     // 开始计时 并更新时间
     start () {
+      if (this.songname === '') {
+        return false
+      }
       this.set = setInterval(() => {
         // 更新时间
         this.updateTime()
@@ -380,19 +399,33 @@ export default {
       if (this.playing === true) {
         this.start()
       }
+    },
+    // 执行搜索
+    searching () {
+      this.$http.get(this.urlSearch + this.searchInput).then((response) => {
+        // 处理数据
+        this.searchLists = response.body.showapi_res_body.pagebean.contentlist
+      }, (response) => {
+        console.error('请求失败！')
+      })
     }
   },
   mounted () {
     if (this.lists.length > 0) {
       this.nowTime = 0
       this.songname = this.lists[0].songname
-      this.singer = this.lists[0].singer
+      this.singername = this.lists[0].singername
       this.lyr = this.lists[0].lyr
       this.url = this.lists[0].url
       this.pic = this.lists[0].img
       this.showLyr()
       // this.$refs.music.load()
       this.updateTime()
+    }
+    // 如果传入搜索关键词 那么执行搜索
+    if (this.searchKey.length > 0) {
+      this.searchInput = this.searchKey
+      this.searching()
     }
     this.volume = 0.5
     this.now = 0
