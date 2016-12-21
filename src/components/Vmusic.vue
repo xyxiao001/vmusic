@@ -58,12 +58,14 @@
                 }">
                 </i>
               </div>
-              <div class="i-control"><i class="iconfont icon-menu" title="播放列表"></i></div>
+              <div class="i-control">
+                <i class="iconfont icon-menu" title="播放列表" @click="toogleList()"></i>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="show-list">
+      <div class="show-list" v-show="openList">
         <p  v-show="lists.length >= 1">本地歌曲</p>
         <ol v-show="lists.length >= 1">
           <li
@@ -110,6 +112,8 @@ export default {
       search: true,
       searchLists: [],
       searchInput: '',
+      searchFirst: true,
+      openList: true,
       onLine: false,
       playing: false,
       pic: '',
@@ -258,6 +262,10 @@ export default {
           }
         })
       }
+    },
+    // 展开列表
+    toogleList () {
+      this.openList = !this.openList
     },
     // 在线的请求歌词
     getLyr () {
@@ -456,10 +464,16 @@ export default {
     },
     // 执行搜索
     searching () {
-      this.now = -1
       this.$http.get(this.urlSearch + this.searchInput).then((response) => {
         // 处理数据
         this.searchLists = response.body.showapi_res_body.pagebean.contentlist
+        if (this.searchFirst === true && this.lists.length === 0) {
+          this.searchFirst = false
+          this.playOnline(0)
+          this.$nextTick(() => {
+            this.playing = false
+          })
+        }
       }, (response) => {
         console.error('请求失败！')
       })
@@ -790,10 +804,6 @@ export default {
         -webkit-transition: all .2s ease;
         transition: all .2s ease;
         overflow: hidden;
-
-        &:first-child:hover{
-          background-color: white;
-        }
 
         &:last-child{
           border-bottom: 1px solid #e9e9e9;
