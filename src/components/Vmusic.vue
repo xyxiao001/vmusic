@@ -13,7 +13,7 @@
       <div class="v-info">
         <div class="v-search">
           <i class="iconfont icon-search"></i>
-          <input type="text" placeholder="搜一搜" v-model="searchInput">
+          <input type="text" placeholder="搜一搜" v-model="searchInput" @keyup.enter="searching">
         </div>
         <div class="v-theme">
           <i class="iconfont icon-theme"></i>
@@ -64,25 +64,25 @@
         </div>
       </div>
       <div class="show-list">
+        <p  v-show="lists.length >= 1">本地歌曲</p>
         <ol v-show="lists.length >= 1">
-          <li>本地歌曲</li>
           <li
             v-for="(item, $index) in lists"
-            :class="{'on': now === $index}"
+            :class="{'on': now === $index && onLine === false}"
             @click="playItem($index)">
-            <span class="v-cur" v-show="now === $index"></span>
+            <span class="v-cur" v-show="now === $index && onLine === false"></span>
             <span>{{ $index + 1 }}</span>
             <span class="song">{{ item.songname }}</span>
             <span class="singer">{{ item.singername }}</span>
           </li>
         </ol>
-        <ol class="search-list" v-show="search && searchInput.length > 0">
-          <li>搜索歌曲</li>
+        <p v-show="search && searchInput.length > 0 || searchLists.length > 0">搜索歌曲</p>
+        <ol class="search-list" v-show="search && searchInput.length > 0 || searchLists.length > 0">
           <li
             v-for="(item, $index) in searchLists"
-            :class="{'on': now === $index}"
+            :class="{'on': now === $index && onLine === true}"
             @click="playOnline($index)">
-            <span class="v-cur" v-show="now === $index"></span>
+            <span class="v-cur" v-show="now === $index && onLine === true"></span>
             <span>{{ $index + 1 }}</span>
             <span class="song">{{ item.songname }}</span>
             <span class="singer">{{ item.singername }}</span>
@@ -110,10 +110,12 @@ export default {
       search: true,
       searchLists: [],
       searchInput: '',
+      onLine: false,
       playing: false,
       pic: '',
       singername: '',
       songname: '',
+      songId: '',
       nowTime: 0,
       now: -1,
       allTime: 0,
@@ -195,6 +197,7 @@ export default {
     },
     // 点击播放
     playItem (index) {
+      this.onLine = false
       if (index === this.now) {
         this.$nextTick(() => {
           this.play()
@@ -221,6 +224,50 @@ export default {
     },
     // 播放线上
     playOnline (index) {
+      this.onLine = true
+      if (index === this.now) {
+        this.$nextTick(() => {
+          this.play()
+        })
+      } else {
+        this.$refs.music.pause()
+        this.now = index
+        this.nowTime = 0
+        this.songname = this.searchLists[index].songname
+        this.singername = this.searchLists[index].singername
+        this.url = this.searchLists[index].m4a
+        this.pic = this.searchLists[index].albumpic_big
+        this.songId = this.searchLists[index].songid
+        // this.$refs.music.load()
+        this.lyrList = [
+          {
+            min: 999,
+            sec: 999,
+            ms: 999,
+            total: 999,
+            txt: '歌词正在疯狂加载中...'
+          }
+        ]
+        // 执行请求歌词
+        this.getLyr()
+        this.$nextTick(() => {
+          if (this.playing === false) {
+            this.playing = true
+          } else {
+            this.$refs.music.play()
+          }
+        })
+      }
+    },
+    // 在线的请求歌词
+    getLyr () {
+      this.$http.get(this.urlDetail + this.songId).then((response) => {
+        // 处理数据
+        this.lyr = response.body.showapi_res_body.lyric
+        this.showLyr()
+      }, (response) => {
+        console.error('请求失败！')
+      })
     },
     // 暂停播放
     pause () {
@@ -274,6 +321,9 @@ export default {
     },
     // 实时更新歌词
     updateLyr () {
+      if (this.lyrList.length < 1) {
+        return false
+      }
       // 每次循环歌词 如果当前时间小于自己 那么显示上一个歌词
       var i = 0
       var loading = true
@@ -311,6 +361,9 @@ export default {
     },
     // 提取歌词 并展示
     showLyr () {
+      if (this.lyr.length <= 0) {
+        return false
+      }
       this.$nextTick(() => {
         // 转义字符
         var lyrics = this.$refs.lyrText.innerHTML
@@ -402,6 +455,7 @@ export default {
     },
     // 执行搜索
     searching () {
+      this.now = -1
       this.$http.get(this.urlSearch + this.searchInput).then((response) => {
         // 处理数据
         this.searchLists = response.body.showapi_res_body.pagebean.contentlist
@@ -421,6 +475,7 @@ export default {
       this.showLyr()
       // this.$refs.music.load()
       this.updateTime()
+      this.now = 0
     }
     // 如果传入搜索关键词 那么执行搜索
     if (this.searchKey.length > 0) {
@@ -428,7 +483,6 @@ export default {
       this.searching()
     }
     this.volume = 0.5
-    this.now = 0
   }
 }
 </script>
@@ -698,11 +752,31 @@ export default {
 
     .show-list {
       overflow: hidden;
+
+      p {
+        line-height: 32px;
+        padding-left: 15px;
+      }
       ol {
         max-height: 140px;
         overflow-y: auto;
         overflow-x: hidden;
+        &::-webkit-scrollbar {
+          width: 4px;
+          height: 8px;
+          background-color: rgba(0, 0, 0, 0.5);
+          -webkit-border-radius: 4px;
+          -moz-border-radius: 4px;
+          border-radius: 4px;
+        }
+        &::-webkit-scrollbar-thumb {
+           background: #ad7a86;
+          -webkit-border-radius: 4px;
+          -moz-border-radius: 4px;
+          border-radius: 4px;
+        }
       }
+
       ol li {
         position: relative;
         height: 32px;
@@ -715,6 +789,14 @@ export default {
         -webkit-transition: all .2s ease;
         transition: all .2s ease;
         overflow: hidden;
+
+        &:first-child:hover{
+          background-color: white;
+        }
+
+        &:last-child{
+          border-bottom: 1px solid #e9e9e9;
+        }
 
         span.v-cur {
           position: absolute;
