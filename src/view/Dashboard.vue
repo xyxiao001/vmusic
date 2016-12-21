@@ -5,6 +5,7 @@
     <p>自己定义歌曲数据传入</p>
     <Vmusic
       :lists="test1.lists"
+      :searchKey="test1.searchKey"
     ></Vmusic>
     <h3>类型2</h3>
     <p>没有自己的数据,使用搜索,同时传入关键字，例如：传入薛之谦</p>
@@ -35,7 +36,8 @@ export default {
             img: 'http://i.gtimg.cn/music/photo/mid_album_300/Y/d/003RMaRI1iFoYd.jpg',
             url: 'http://ws.stream.qqmusic.qq.com/107192078.m4a?fromtag=46'
           }
-        ]
+        ],
+        searchKey: '许嵩'
       },
       test2: {
         searchKey: '薛之谦'

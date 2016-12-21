@@ -197,12 +197,12 @@ export default {
     },
     // 点击播放
     playItem (index) {
-      this.onLine = false
-      if (index === this.now) {
+      if (index === this.now && this.onLine === false) {
         this.$nextTick(() => {
           this.play()
         })
       } else {
+        this.onLine = false
         this.$refs.music.pause()
         this.now = index
         this.nowTime = 0
@@ -224,12 +224,12 @@ export default {
     },
     // 播放线上
     playOnline (index) {
-      this.onLine = true
-      if (index === this.now) {
+      if (index === this.now && this.onLine === true) {
         this.$nextTick(() => {
           this.play()
         })
       } else {
+        this.onLine = true
         this.$refs.music.pause()
         this.now = index
         this.nowTime = 0
@@ -278,16 +278,17 @@ export default {
     },
     // 循环方式
     next () {
+      var arr = this.onLine ? this.searchLists : this.lists
       switch (this.type) {
         case 'order':
-          if (this.now + 1 > this.lists.length - 1) {
-            this.playItem(0)
+          if (this.now + 1 > arr.length - 1) {
+            this.onLine ? this.playOnline(0) : this.playItem(0)
           } else {
-            this.playItem(this.now + 1)
+            this.onLine ? this.playOnline(this.now + 1) : this.playItem(this.now + 1)
           }
           break
         case 'random':
-          this.playItem(this.randomNext())
+          this.onLine ? this.playOnline(this.randomNext()) : this.playItem(this.randomNext())
           break
         default:
           this.currentTime = 0
@@ -296,7 +297,7 @@ export default {
     },
     // 随机播放
     randomNext () {
-      var l = this.lists.length
+      var l = this.onLine ? this.searchLists.length : this.lists.length
       var i = Math.floor(Math.random() * l)
       return i
     },
