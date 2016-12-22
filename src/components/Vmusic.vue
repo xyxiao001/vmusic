@@ -111,7 +111,6 @@
 export default {
   data () {
     return {
-      search: true,
       searchLists: [],
       searchInput: '',
       searchFirst: true,
@@ -142,14 +141,16 @@ export default {
   props: {
     lists: {
       type: Array,
-      required: false,
       default: () => {
         return []
       }
     },
+    search: {
+      type: Boolean,
+      default: true
+    },
     searchKey: {
       type: String,
-      required: false,
       default: ''
     }
   },
