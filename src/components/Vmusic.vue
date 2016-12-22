@@ -13,7 +13,7 @@
       <div class="v-info">
         <div class="v-search">
           <i class="iconfont icon-search"></i>
-          <input type="text" placeholder="搜一搜" v-model="searchInput" @keyup.enter="searching">
+          <input type="text" placeholder="搜一搜" v-model="searchInput" @keyup.enter="goSearch">
         </div>
         <div class="v-theme">
           <i class="iconfont icon-theme"></i>
@@ -79,7 +79,7 @@
           </li>
         </ol>
         <p v-show="search && searchInput.length > 0 || searchLists.length > 0">搜索歌曲</p>
-        <ol class="search-list" v-show="search && searchInput.length > 0 || searchLists.length > 0">
+        <ol class="search-list" v-show="search && searchInput.length > 0 || searchLists.length > 0" ref="search">
           <li
             v-for="(item, $index) in searchLists"
             :class="{'on': now === $index && onLine === true}"
@@ -470,6 +470,13 @@ export default {
       if (this.playing === true) {
         this.start()
       }
+    },
+    // 输入框搜索
+    goSearch () {
+      this.page = 1
+      this.searchLoading = true
+      this.$refs.search.scrollTop = 0
+      this.searching()
     },
     // 执行搜索
     searching () {
