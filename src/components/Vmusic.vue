@@ -399,7 +399,7 @@ export default {
             obj.sec = ~~(val.substring(4, 6))
             obj.ms = ~~(val.substring(7, 9))
             obj.txt = val.substring(10, val.length)
-            obj.txt = obj.txt.replace('/^s+|s+$/', '')
+            obj.txt = obj.txt.replace('/^s+|s+$/g', '')
             obj.dis = false
             obj.total = obj.min * 60 + obj.sec + obj.ms / 100
             if (obj.txt.length > 0) {
