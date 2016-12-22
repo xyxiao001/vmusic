@@ -89,6 +89,8 @@
             <span class="song">{{ item.songname }}</span>
             <span class="singer">{{ item.singername }}</span>
           </li>
+          <li style="text-align: center" @click="searchMore" v-if="!searchLoading">{{ searchMsg }}</li>
+          <li style="text-align: center" v-else>加载中.....</li>
         </ol>
       </div>
     </div>
@@ -113,6 +115,9 @@ export default {
       searchLists: [],
       searchInput: '',
       searchFirst: true,
+      searchLoading: false,
+      page: 1,
+      allPages: 0,
       openList: true,
       onLine: false,
       playing: false,
@@ -130,7 +135,7 @@ export default {
       lyrList: [],
       volume: 1,
       url: '',
-      urlSearch: 'https://route.showapi.com/213-1?page=1&showapi_appid=26601&showapi_sign=adc05e2062a5402b81c563a3ced09208&keyword=',
+      urlSearch: 'https://route.showapi.com/213-1?showapi_appid=26601&showapi_sign=adc05e2062a5402b81c563a3ced09208&keyword=',
       urlDetail: 'https://route.showapi.com/213-2?showapi_appid=26601&showapi_sign=adc05e2062a5402b81c563a3ced09208&musicid='
     }
   },
@@ -159,6 +164,10 @@ export default {
         return m + ':' + s
       }
       return two(this.nowTime) + ' / ' + two(this.allTime)
+    },
+    searchMsg () {
+      var msg = this.page <= this.allPages ? '点击加载更多....' : '加载完了....'
+      return msg
     }
   },
   watch: {
@@ -464,9 +473,16 @@ export default {
     },
     // 执行搜索
     searching () {
-      this.$http.get(this.urlSearch + this.searchInput).then((response) => {
+      this.$http.get(this.urlSearch + this.searchInput + '&page=' + this.page).then((response) => {
         // 处理数据
-        this.searchLists = response.body.showapi_res_body.pagebean.contentlist
+        this.searchLoading = false
+        this.page = response.body.showapi_res_body.pagebean.currentPage
+        if (this.page > 1) {
+          this.searchLists = this.searchLists.concat(response.body.showapi_res_body.pagebean.contentlist)
+        } else {
+          this.searchLists = response.body.showapi_res_body.pagebean.contentlist
+        }
+        this.allPages = response.body.showapi_res_body.pagebean.allPages
         if (this.searchFirst === true && this.lists.length === 0) {
           this.searchFirst = false
           this.playOnline(0)
@@ -477,6 +493,14 @@ export default {
       }, (response) => {
         console.error('请求失败！')
       })
+    },
+    // 加载下一页
+    searchMore () {
+      if (this.page < this.allPages) {
+        this.page += 1
+        this.searching()
+        this.searchLoading = true
+      }
     }
   },
   mounted () {
@@ -896,5 +920,4 @@ export default {
       }
     }
   }
-
 </style>
