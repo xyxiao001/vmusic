@@ -82,9 +82,9 @@
         <ol class="search-list" v-show="search && searchInput.length > 0 || searchLists.length > 0" ref="search">
           <li
             v-for="(item, $index) in searchLists"
-            :class="{'on': now === $index && onLine === true}"
+            :class="{'on': now === $index && onLine === true && songId === item.songid}"
             @click="playOnline($index)">
-            <span class="v-cur" v-show="now === $index && onLine === true"></span>
+            <span class="v-cur" v-show="now === $index && onLine === true && songId === item.songid"></span>
             <span>{{ $index + 1 }}</span>
             <span class="song">{{ item.songname }}</span>
             <span class="singer">{{ item.singername }}</span>
