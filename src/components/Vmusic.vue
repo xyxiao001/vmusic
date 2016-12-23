@@ -66,7 +66,7 @@
         </div>
       </div>
       <div class="show-list" :class="{'list-hide': !openList}">
-        <p  v-show="lists.length >= 1">本地歌曲</p>
+        <p v-show="lists.length >= 1 && search">本地歌曲</p>
         <ol v-show="lists.length >= 1">
           <li
             v-for="(item, $index) in lists"
