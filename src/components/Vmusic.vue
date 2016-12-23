@@ -808,6 +808,7 @@ export default {
         max-height: 140px;
         overflow-y: auto;
         overflow-x: hidden;
+        -webkit-overflow-scrolling : touch;  
         &::-webkit-scrollbar {
           width: 4px;
           height: 8px;
@@ -899,6 +900,16 @@ export default {
             right: -5px;
             bottom: -8px;
             width: auto;
+          }
+        }
+
+        .show-list {
+          ol li:hover {
+            background-color: white;
+          }
+
+          ol li.on:hover {
+            background-color: #efefef;
           }
         }
       }
