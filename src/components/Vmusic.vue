@@ -11,7 +11,7 @@
         </i>
       </div>
       <div class="v-info">
-        <div class="v-search">
+        <div class="v-search" v-show="search">
           <i class="iconfont icon-search"></i>
           <input type="text" placeholder="搜一搜" v-model="searchInput" @keyup.enter="goSearch">
         </div>
@@ -65,7 +65,7 @@
           </div>
         </div>
       </div>
-      <div class="show-list" v-show="openList">
+      <div class="show-list" :class="{'list-hide': !openList}">
         <p  v-show="lists.length >= 1">本地歌曲</p>
         <ol v-show="lists.length >= 1">
           <li
@@ -152,6 +152,10 @@ export default {
     searchKey: {
       type: String,
       default: ''
+    },
+    openLists: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -530,6 +534,7 @@ export default {
       this.searching()
     }
     this.volume = 0.5
+    this.openList = this.openLists
   }
 }
 </script>
@@ -594,7 +599,7 @@ export default {
 
       i.icon-play {
         position: absolute;
-        right: 35%;
+        right: 32%;
         bottom: 30%;
         font-size: 35px;
         animation: showPlay 0.2s ease-out;
@@ -617,7 +622,7 @@ export default {
 
         to {
           position: absolute;
-          right: 35%;
+          right: 32%;
           bottom: 30%;
           font-size: 35px;
         }
@@ -626,7 +631,7 @@ export default {
       @keyframes showPause {
         from {
           position: absolute;
-          right: 35%;
+          right: 32%;
           bottom: 30%;
           font-size: 35px;
         }
@@ -679,6 +684,7 @@ export default {
         }
 
         p {
+          display: block;
           font-size: 12px;
           line-height: 15px;
           color: #666;
@@ -799,8 +805,12 @@ export default {
 
     .show-list {
       overflow: hidden;
+      transition: all .5s ease-in-out;
+      will-change: height;
+      max-height: 350px;
 
       p {
+        display: block;
         line-height: 32px;
         padding-left: 15px;
       }
@@ -808,7 +818,7 @@ export default {
         max-height: 140px;
         overflow-y: auto;
         overflow-x: hidden;
-        -webkit-overflow-scrolling : touch;  
+        -webkit-overflow-scrolling : touch;
         &::-webkit-scrollbar {
           width: 4px;
           height: 8px;
@@ -864,6 +874,13 @@ export default {
           background: #efefef;
         }
       }
+    }
+
+    .list-hide {
+      max-height: 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translate3d(0, -20%, 0);
     }
   }
 
