@@ -1,5 +1,5 @@
 <template>
-  <div class="v-music">
+  <div class="v-music" :class="'v-' + theme">
     <div class="v-content">
       <div
         class="v-pic"
@@ -16,7 +16,13 @@
           <input type="text" placeholder="搜一搜" v-model="searchInput" @keyup.enter="goSearch">
         </div>
         <div class="v-theme">
-          <i class="iconfont icon-theme"></i>
+          <i class="iconfont icon-theme">
+            <div class="theme-list">
+              <div class="theme-item">
+                官方白
+              </div>
+            </div>
+          </i>
         </div>
         <div class="v-title">
           <span class="song">{{ songname }}</span>
@@ -156,6 +162,10 @@ export default {
     openLists: {
       type: Boolean,
       default: true
+    },
+    theme: {
+      type: String,
+      default: 'white'
     }
   },
   computed: {
@@ -546,22 +556,48 @@ export default {
     font-size: 14px;
     width: 520px;
     overflow: hidden;
+    border-top: 1px solid #e9e9e9;
 
     .v-theme {
       position: absolute;
-      top: 2px;
+      top: 6px;
       right: 2px;
       cursor: pointer;
 
       i {
+        float: right;
+        margin-right: 3px;
         color: #666;
+        &:hover .theme-list {
+          display: block;
+        }
+      }
+
+      .theme-list {
+        display: none;
+        position: absolute;
+        left: -87px;
+        width: 100px;
+        height: 80px;
+        background-color: white;
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+        cursor: pointer;
+        z-index: 999;
+
+        .theme-item {
+          display: inline-block;
+          width: 45px;
+          line-height: 40px;
+          font-size: 12px;
+          text-align: center;
+        }
       }
     }
 
     .v-search {
       position: absolute;
-      top: 2px;
-      right: 20px;
+      top: 6px;
+      right: 25px;
 
       i {
         position: absolute;

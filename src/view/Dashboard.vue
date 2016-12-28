@@ -50,7 +50,7 @@ export default {
             url: 'http://ws.stream.qqmusic.qq.com/107192078.m4a?fromtag=46'
           }
         ],
-        searchKey: '许嵩'
+        searchKey: '回音哥'
       },
       test2: {
         searchKey: '薛之谦',
