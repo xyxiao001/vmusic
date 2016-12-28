@@ -352,8 +352,6 @@ export default {
       var loading = true
       this.lyrList.forEach((val, index) => {
         this.lyrList[index].dis = false
-      })
-      this.lyrList.forEach((val, index) => {
         if ((val.total - this.nowTime) > 0 && loading === true) {
           i = index - 1
           i = i > 0 ? i : 0
