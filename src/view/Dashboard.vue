@@ -7,6 +7,7 @@
       <Vmusic
         :lists="test1.lists"
         :searchKey="test1.searchKey"
+        :theme="test1.theme"
       ></Vmusic>
     </div>
     <div class="item">
@@ -15,6 +16,7 @@
       <Vmusic
         :lists="test3.lists"
         :search="test3.search"
+        :theme="test3.theme"
       ></Vmusic>
     </div>
     <div class="item">
@@ -23,6 +25,7 @@
       <Vmusic
         :searchKey="test2.searchKey"
         :openLists="test2.openLists"
+        :theme="test2.theme"
       ></Vmusic>
     </div>
   </div>
@@ -50,11 +53,13 @@ export default {
             url: 'http://ws.stream.qqmusic.qq.com/107192078.m4a?fromtag=46'
           }
         ],
-        searchKey: '回音哥'
+        searchKey: '回音哥',
+        theme: 'theme-red'
       },
       test2: {
         searchKey: '薛之谦',
-        openLists: false
+        openLists: false,
+        theme: 'theme-black'
       },
       test3: {
         lists: [
@@ -66,7 +71,8 @@ export default {
             url: 'http://ws.stream.qqmusic.qq.com/109828807.m4a?fromtag=46'
           }
         ],
-        search: false
+        search: false,
+        theme: 'theme-blue'
       }
     }
   },

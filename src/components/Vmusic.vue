@@ -1,5 +1,5 @@
 <template>
-  <div class="v-music" :class="'v-' + theme">
+  <div class="v-music" :class="nowTheme">
     <div class="v-content">
       <div
         class="v-pic"
@@ -7,7 +7,7 @@
         :style="{'background-image': 'url(' + pic + ')'}">
         <i class="iconfont"
           :title="msg"
-          :class="{'icon-play': playing === false, 'icon-pause': playing === true}">
+          :class="{'icon-play': !playing, 'icon-pause': playing}">
         </i>
       </div>
       <div class="v-info">
@@ -18,8 +18,10 @@
         <div class="v-theme">
           <i class="iconfont icon-theme">
             <div class="theme-list">
-              <div class="theme-item">
-                官方白
+              <div class="theme-item"
+                :class="[`v-${item.text}`, { on: item.text === nowTheme }]"
+                v-for="item in themeLists" @click="changeTheme(item.text)">
+                {{ item.name }}
               </div>
             </div>
           </i>
@@ -121,6 +123,29 @@ export default {
       searchInput: '',
       searchFirst: true,
       searchLoading: false,
+      themeLists: [
+        {
+          id: '001',
+          name: '默认白',
+          text: 'theme-white'
+        },
+        {
+          id: '002',
+          name: '官方红',
+          text: 'theme-red'
+        },
+        {
+          id: '003',
+          name: '天际蓝',
+          text: 'theme-blue'
+        },
+        {
+          id: '004',
+          name: '炫酷黑',
+          text: 'theme-black'
+        }
+      ],
+      nowTheme: '',
       page: 1,
       allPages: 0,
       openList: true,
@@ -165,7 +190,7 @@ export default {
     },
     theme: {
       type: String,
-      default: 'white'
+      default: 'theme-white'
     }
   },
   computed: {
@@ -521,6 +546,10 @@ export default {
         this.searching()
         this.searchLoading = true
       }
+    },
+    // 改变主题
+    changeTheme (data) {
+      this.nowTheme = data
     }
   },
   mounted () {
@@ -543,6 +572,7 @@ export default {
     }
     this.volume = 0.5
     this.openList = this.openLists
+    this.nowTheme = this.theme
   }
 }
 </script>
@@ -578,7 +608,7 @@ export default {
         position: absolute;
         left: -87px;
         width: 100px;
-        height: 80px;
+        height: 90px;
         background-color: white;
         box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
         cursor: pointer;
@@ -586,10 +616,26 @@ export default {
 
         .theme-item {
           display: inline-block;
+          padding: 0 2px 5px 2px;
           width: 45px;
           line-height: 40px;
           font-size: 12px;
           text-align: center;
+        }
+
+        .v-theme-red {
+          color: white;
+          background-color: #c62f2f;
+        }
+
+        .v-theme-blue {
+          color: white;
+          background-color: #66b7ff;
+        }
+
+        .v-theme-black {
+          color: white;
+          background-color: #232326;
         }
       }
     }
