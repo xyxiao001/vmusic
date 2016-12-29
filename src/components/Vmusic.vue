@@ -613,7 +613,16 @@ export default {
         cursor: pointer;
         z-index: 999;
 
+        .on:before {
+          position: absolute;
+          content: '√';
+          font-size: 20px;
+          bottom: -5px;
+          right: 5px;
+        }
+
         .theme-item {
+          position: relative;
           display: inline-block;
           padding: 0 2px 5px 2px;
           width: 45px;
@@ -963,6 +972,119 @@ export default {
     }
   }
 
+  // 官方红
+  $red: #d33030;
+  .theme-red {
+    .show-list ol li span.v-cur {
+      background-color: $red;
+    }
+
+    .show-list ol {
+      &::-webkit-scrollbar-thumb {
+        background: $red;
+      }
+    }
+
+    .v-info .v-progress .v-line-to {
+      background-color: $red;
+    }
+
+    .v-info .v-progress .v-line-to .v-point {
+      border-color: $red;
+    }
+
+    .v-info .v-progress .v-line-to .v-point:hover {
+      background-color: $red;
+    }
+
+    .v-info .volume-progress .volume-to {
+      background-color: $red;
+    }
+
+    .v-pic i.icon-play {
+      color: $red;
+    }
+
+    .v-pic i.icon-pause {
+      color: $red;
+    }
+  }
+
+  // 天际蓝
+  $blue: #5bb8fb;
+  .theme-blue {
+    .show-list ol li span.v-cur {
+      background-color: $blue;
+    }
+
+    .show-list ol {
+      &::-webkit-scrollbar-thumb {
+        background: $blue;
+      }
+    }
+
+    .v-info .v-progress .v-line-to {
+      background-color: $blue;
+    }
+
+    .v-info .v-progress .v-line-to .v-point {
+      border-color: $blue;
+    }
+
+    .v-info .v-progress .v-line-to .v-point:hover {
+      background-color: $blue;
+    }
+
+    .v-info .volume-progress .volume-to {
+      background-color: $blue;
+    }
+
+    .v-pic i.icon-play {
+      color: $blue;
+    }
+
+    .v-pic i.icon-pause {
+      color: $blue;
+    }
+  }
+
+  // 天际蓝
+  $black: #222225;
+  .theme-black {
+    .show-list ol li span.v-cur {
+      background-color: $black;
+    }
+
+    .show-list ol {
+      &::-webkit-scrollbar-thumb {
+        background: $black;
+      }
+    }
+
+    .v-info .v-progress .v-line-to {
+      background-color: $black;
+    }
+
+    .v-info .v-progress .v-line-to .v-point {
+      border-color: $black;
+    }
+
+    .v-info .v-progress .v-line-to .v-point:hover {
+      background-color: $black;
+    }
+
+    .v-info .volume-progress .volume-to {
+      background-color: $black;
+    }
+
+    .v-pic i.icon-play {
+      color: white;
+    }
+
+    .v-pic i.icon-pause {
+      color: white;
+    }
+  }
   @media screen and (max-width: 520px) {
     .v-music {
       margin-left: 1%;

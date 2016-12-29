@@ -54,7 +54,7 @@ export default {
           }
         ],
         searchKey: '回音哥',
-        theme: 'theme-red'
+        theme: 'theme-white'
       },
       test2: {
         searchKey: '薛之谦',
