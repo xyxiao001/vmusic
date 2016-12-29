@@ -206,8 +206,7 @@ export default {
       return two(this.nowTime) + ' / ' + two(this.allTime)
     },
     searchMsg () {
-      var msg = this.page <= this.allPages ? '点击加载更多....' : '加载完了....'
-      return msg
+      return this.page <= this.allPages ? '点击加载更多....' : '加载完了....'
     }
   },
   watch: {
