@@ -165,8 +165,8 @@ export default {
       lyrList: [],
       volume: 1,
       url: '',
-      urlSearch: 'https://route.showapi.com/213-1?showapi_appid=26601&showapi_sign=adc05e2062a5402b81c563a3ced09208&keyword=',
-      urlDetail: 'https://route.showapi.com/213-2?showapi_appid=26601&showapi_sign=adc05e2062a5402b81c563a3ced09208&musicid='
+      urlSearch: 'https://route.showapi.com/213-1?showapi_appid=26601&showapi_sign=9019a61af1584616b14262b9d5f5c1ff&keyword=',
+      urlDetail: 'https://route.showapi.com/213-2?showapi_appid=26601&showapi_sign=9019a61af1584616b14262b9d5f5c1ff&musicid='
     }
   },
   props: {
